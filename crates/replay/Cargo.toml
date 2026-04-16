@@ -1,0 +1,21 @@
+[package]
+name = "polyhft-replay"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+
+[dependencies]
+anyhow.workspace = true
+chrono.workspace = true
+rand.workspace = true
+rust_decimal.workspace = true
+rust_decimal_macros.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+tracing.workspace = true
+uuid.workspace = true
+
+polyhft-core = { path = "../core" }
+polyhft-risk = { path = "../risk" }
+polyhft-signal = { path = "../signal" }

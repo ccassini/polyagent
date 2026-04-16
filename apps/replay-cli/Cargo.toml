@@ -1,0 +1,17 @@
+[package]
+name = "polyhft-replay-cli"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+
+[dependencies]
+anyhow.workspace = true
+clap.workspace = true
+serde_json.workspace = true
+tokio.workspace = true
+tracing.workspace = true
+
+polyhft-core = { path = "../../crates/core" }
+polyhft-ingest = { path = "../../crates/ingest" }
+polyhft-replay = { path = "../../crates/replay" }

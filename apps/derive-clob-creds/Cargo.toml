@@ -1,0 +1,21 @@
+[package]
+name = "polyhft-derive-clob-creds"
+description = "Derives Polymarket CLOB L2 api_key + secret + passphrase via private key (for config [auth] and user WS)"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+
+[[bin]]
+name = "polyhft-derive-clob-creds"
+path = "src/main.rs"
+
+[dependencies]
+alloy-signer-local.workspace = true
+anyhow.workspace = true
+clap.workspace = true
+polyhft-core = { path = "../../crates/core" }
+polymarket-client-sdk = { workspace = true }
+serde_json.workspace = true
+tokio.workspace = true
+toml_edit = "0.22.27"

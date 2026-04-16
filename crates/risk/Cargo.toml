@@ -1,0 +1,20 @@
+[package]
+name = "polyhft-risk"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+
+[dependencies]
+anyhow.workspace = true
+dashmap.workspace = true
+rust_decimal.workspace = true
+rust_decimal_macros.workspace = true
+serde.workspace = true
+tracing.workspace = true
+chrono.workspace = true
+
+polyhft-core = { path = "../core" }
+
+[dev-dependencies]
+uuid.workspace = true

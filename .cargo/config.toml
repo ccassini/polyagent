@@ -1,0 +1,11 @@
+[build]
+rustflags = [
+  "-C", "target-cpu=native",
+  "-C", "force-frame-pointers=yes",
+]
+
+[target.aarch64-apple-darwin]
+rustflags = [
+  "-C", "target-cpu=apple-m1",
+  "-C", "force-frame-pointers=yes",
+]

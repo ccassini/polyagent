@@ -1,0 +1,217 @@
+environment = "prod"
+
+# ── Auth ─────────────────────────────────────────────────────────────────────
+# Leave blank for paper / --dry-run mode (no signing needed).
+# Fill in for live trading, or run:  npm run apply:clob-creds
+[auth]
+private_key = ""
+api_key = ""
+api_secret = ""
+api_passphrase = ""
+wallet_address = ""
+funder_address = ""
+signature_kind = "gnosis_safe"
+
+[clob]
+rest_url = "https://clob.polymarket.com"
+ws_url = "wss://ws-subscriptions-clob.polymarket.com/ws/market"
+ws_user_url = "wss://ws-subscriptions-clob.polymarket.com/ws/user"
+ws_sports_url = "wss://sports-api.polymarket.com/ws"
+
+[gamma]
+rest_url = "https://gamma-api.polymarket.com"
+markets_path = "/markets"
+request_timeout_ms = 2000
+page_size = 500
+max_pages = 20
+
+[pyth]
+enabled = true
+hermes_url = "https://hermes.pyth.network"
+stream_path = "/v2/updates/price/stream"
+connect_timeout_ms = 2500
+reconnect_backoff_ms = 500
+max_backoff_ms = 10000
+feed_ids = [
+  { symbol = "btcusd", feed_id = "e62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43" },
+  { symbol = "ethusd", feed_id = "ff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace" },
+  { symbol = "solusd", feed_id = "ef0d8b6fda2ceba41da15d4095d1da392a0d2f8ed0c6c7bc0f4cfac8c280b56d" }
+]
+
+[markets]
+refresh_secs = 60
+require_fee_enabled = false
+# Accept markets up to 30 min past start (5m/15m windows rotate frequently)
+max_past_market_age_minutes = 30
+enforce_short_lifetime = false
+min_lifetime_minutes = 2
+max_lifetime_minutes = 0
+# Focused: 5-minute and 15-minute BTC/ETH/SOL updown markets only
+max_markets = 24
+include_slug_patterns = ["(?i)^(btc|eth|sol)-updown-(5m|15m)"]
+include_question_patterns = []
+exclude_question_patterns = []
+exclude_slug_patterns = ["(?i)(test|example|draft)"]
+explicit_condition_ids = []
+
+[strategy]
+decision_interval_ms = 50
+post_only_target_ratio = "0.99"
+
+# ── Maker quoting ────────────────────────────────────────────────────────────
+# Post-only bids on both YES and NO legs; requires liquid books (BTC/ETH/SOL 5m).
+maker_quotes_enabled = true
+maker_sell_quotes = false
+quote_half_spread_bps = "6"
+quote_levels = 2
+quote_level_step_bps = "3"
+quote_size_usdc = "10"
+min_quote_size_usdc = "1"
+max_quote_size_usdc = "200"
+clip_min_usdc = "3"
+clip_max_usdc = "40"
+fractional_kelly_cap = "0.10"
+maker_min_signal_edge = "0.0008"
+maker_min_quote_edge = "0.0004"
+maker_min_expected_value = "0.0001"
+maker_min_fill_probability = "0.02"
+maker_cancel_cost_per_quote = "0.0001"
+maker_max_quotes_per_market = 4
+maker_one_sided_bias_threshold = "0.0012"
+
+# ── Directional FOK taker (momentum / basis arbitrage) ───────────────────────
+directional_market_enabled = true
+# ~0.08% signed ref return before firing (0.00003 was noise → constant taker bleed in paper).
+directional_market_min_abs_bias = "0.0008"
+directional_market_usdc = "10"
+# Require cheap two-sided book before single-leg momentum takers (directional + volume spike).
+momentum_taker_max_ask_sum = "1.02"
+
+# ── Full YES+NO<1 arbitrage ──────────────────────────────────────────────────
+# min_taker_edge = net profit after fees when ask_sum < 1.0
+# Set very high to disable (existing spread-farm handles the looser threshold).
+mispricing_min_edge = "0.001"
+min_taker_edge = "0.007"
+
+# ── Chainlink-Pyth basis arb ─────────────────────────────────────────────────
+chainlink_pyth_arb_min_edge = "0.0005"
+chainlink_pyth_bias_weight = "0.35"
+
+# ── Misc signal params ───────────────────────────────────────────────────────
+ref_price_max_staleness_ms = 5000
+queue_decay_lambda = "0.15"
+adverse_selection_windows_ms = [50, 200, 500]
+adverse_selection_weight = "0.10"
+
+# ── Tail-end strategy ─────────────────────────────────────────────────────────
+# Buy the near-certain leg in the final minutes before market close.
+# Captures the convergence yield (probability → 1.0) with minimal downside.
+tail_end_enabled = true
+tail_end_min_prob = "0.88"       # 88¢+ qualifies as "near-certain"
+tail_end_minutes_to_expiry = 2   # engage only in the last 2 minutes
+tail_end_usdc = "15"             # larger size because risk is very low
+
+# ── Volume / activity spike strategy ─────────────────────────────────────────
+# Fires a momentum-aligned taker when book-update frequency spikes vs baseline.
+# Idea: unusual activity predicts impending price discovery; ride the wave.
+volume_spike_enabled = true
+volume_spike_multiplier = "3.5"  # stricter than 2.5 — fewer false spikes
+volume_spike_usdc = "8"
+
+# ── Spread-farm strategy ──────────────────────────────────────────────────────
+# Buy both YES and NO when their ask_sum ≤ threshold.
+# Looser than full-arb; accumulates cheap paired positions that pay off at resolution.
+spread_farm_enabled = true
+spread_farm_max_ask_sum = "0.980" # live 5m books sit at ~0.97–1.03; capture clear discounts only
+spread_farm_usdc = "5"           # small size per leg; repeated fills compound
+
+[risk]
+# Paper mode ($5k balance): relaxed limits. Tighten for real money.
+max_notional_per_market = "100"
+max_total_notional = "500"
+inventory_soft_limit = "50"
+inventory_hard_limit = "100"
+max_drawdown_usdc = "2500"
+stale_data_kill_ms = 180000
+correlation_limit_btc_eth = "0.85"
+max_open_orders = 20
+min_seconds_to_market_end = 30
+
+[execution]
+cancel_replace_interval_ms = 150
+quote_ttl_ms = 800
+taker_rebalance_cooldown_ms = 2000
+heartbeat_interval_secs = 5
+liveness_timeout_secs = 15
+retry_initial_ms = 250
+retry_max_ms = 30000
+retry_max_attempts = 8
+cloudflare_status_codes = [408, 429, 502, 503, 504]
+matching_engine_restart_status = 425
+use_server_time = true
+maker_only_default = true
+requote_min_age_ms = 350
+requote_price_ticks = 2
+requote_size_bps = 1800
+enable_wrap_unwrap = false
+enable_clob_heartbeats = false
+# paper_trading = true  →  same as --dry-run (no real CLOB orders)
+paper_trading = false
+
+[replay]
+latency_p50_ms = 8
+latency_p95_ms = 22
+latency_p99_ms = 55
+random_seed = 42
+event_log_path = "./data/replay/events.ndjson"
+# Paper / dry-run: closer to real CLOB (FOK partial miss + pay through spread).
+paper_taker_slippage_bps = 100
+paper_taker_fill_probability = 0.5
+paper_maker_backstop_fill_probability = 0.22
+
+[telemetry]
+log_level = "info,polymarket_client_sdk::ws=error"
+json_logs = false
+prometheus_bind = "0.0.0.0:9901"
+activity_api_bind = "127.0.0.1:9902"
+training_log_path = "./data/live/training.ndjson"
+training_log_queue = 8192
+metrics_prefix = "polyhft"
+
+[infra]
+enable_busy_poll_notes = true
+cpu_isolation = [2, 3, 4, 5]
+irq_affinity = [0, 1]
+ptp_drift_warn_ms = 5000
+ptp_drift_kill_ms = 60000
+
+# ── Paper engine (favorite-side engine; active in BOTH paper & live modes) ─────
+[paper_engine]
+# Eligibility — tuned for 5m/15m crypto updown markets
+max_hours_to_expiry      = 999.0       # paper/backtest mode: do not filter out by horizon
+min_hours_to_expiry      = 0.003       # ~10 seconds
+quote_max_stale_ms       = 30000       # tolerate sparse updates in paper feed
+min_book_liquidity       = "3"         # min ask depth in contracts
+max_spread_fraction      = "10.0"      # effectively disable spread gate in paper mode
+
+# Signal: favorite-side band 0.58–0.92 (user wants 60-70%+ favorites)
+fav_prob_low             = "0.01"
+fav_prob_high            = "0.99"
+min_net_edge             = "-1.0"      # disable edge gate in paper mode
+taker_fee_fraction       = "0.01"      # 1% Polymarket taker fee
+
+# Execution
+entry_usdc               = "10"
+slippage_bps             = "10"        # 10bps slippage
+fill_probability         = 0.65
+
+# Position management
+take_profit_fraction     = "0.006"     # +0.6% from entry price
+min_early_exit_profit_usdc = "0.10"    # early close only if >= 10 cent net profit
+min_early_exit_profit_fraction = "0.05" # early close only if >= 5% profit
+stop_loss_fraction       = "0.025"     # -2.5% from entry price
+max_hold_secs            = 120         # 2 minutes max hold for 5m markets
+force_flat_secs_before_expiry = 60    # close 1min before market end
+entry_cooldown_secs      = 2           # per (market,leg) re-entry cooldown
+max_open_positions       = 4
+max_exposure_per_market_usdc = "50"

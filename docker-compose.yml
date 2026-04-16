@@ -1,0 +1,62 @@
+services:
+  live-agent:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: polyhft/live-agent:latest
+    container_name: polyhft-live-agent
+    restart: unless-stopped
+    env_file:
+      - .env
+    command: ["/usr/local/bin/polyhft-live-agent", "--config", "/etc/polyhft/config.toml"]
+    volumes:
+      - ./config.toml:/etc/polyhft/config.toml:ro
+      - ./data:/home/polyhft/data
+    ports:
+      - "9901:9901"
+    # For Linux coloc-like setups prefer host networking + IRQ/CPU pinning on host.
+    # network_mode: host
+    cpuset: "2-5"
+    ulimits:
+      nofile:
+        soft: 262144
+        hard: 262144
+    stop_grace_period: 5s
+
+  prometheus:
+    image: prom/prometheus:v2.53.3
+    container_name: polyhft-prometheus
+    restart: unless-stopped
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.retention.time=15d"
+    volumes:
+      - ./docker/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    ports:
+      - "9090:9090"
+    depends_on:
+      - live-agent
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: polyhft/live-agent:latest
+    container_name: polyhft-dashboard
+    restart: unless-stopped
+    command:
+      [
+        "/usr/local/bin/polyhft-dashboard",
+        "--bind",
+        "0.0.0.0:8080",
+        "--target",
+        "http://live-agent:9901/",
+      ]
+    ports:
+      - "8080:8080"
+    depends_on:
+      - live-agent
+
+volumes:
+  prometheus_data:

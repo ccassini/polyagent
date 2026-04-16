@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -E '\\\\.\\(rs|ts|tsx|js|toml|md|env\\)$')",
+      "Bash(find /Users/cassini/Desktop/polymarket -name \"Cargo.toml\" -exec wc -l {} +)",
+      "Bash(cargo check:*)",
+      "Bash(cargo test:*)",
+      "Bash(cargo clippy:*)",
+      "Bash(node -e \"require\\('./node_modules/concurrently'\\)\")",
+      "Bash(node -e \"const p=require\\('./package.json'\\); console.log\\(Object.keys\\(p.scripts\\).join\\('\\\\n'\\)\\)\")",
+      "Bash(npx tsc:*)",
+      "WebFetch(domain:raw.githubusercontent.com)"
+    ]
+  }
+}

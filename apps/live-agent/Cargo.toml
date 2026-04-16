@@ -1,0 +1,26 @@
+[package]
+name = "polyhft-live-agent"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+
+[dependencies]
+anyhow.workspace = true
+axum.workspace = true
+clap.workspace = true
+metrics.workspace = true
+rand.workspace = true
+rust_decimal.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+tokio.workspace = true
+tracing.workspace = true
+
+polyhft-core = { path = "../../crates/core" }
+polyhft-execution = { path = "../../crates/execution" }
+polyhft-ingest = { path = "../../crates/ingest" }
+polyhft_paper_engine = { path = "../../crates/paper_engine" }
+polyhft-replay = { path = "../../crates/replay" }
+polyhft-risk = { path = "../../crates/risk" }
+polyhft-signal = { path = "../../crates/signal" }

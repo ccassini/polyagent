@@ -1,0 +1,41 @@
+> concurrently -n ui,dash -c magenta,yellow --kill-others-o
+> concurrently -n ui,dash -c magenta,yellow --kill-others-on-fail "npm run dev:ui" "npm run dev:dash"
+
+[dash] 
+[dash] > dev:dash
+[dash] > cargo run -p polyhft-dashboard -- --workspace . --
+[dash] > cargo run -p polyhft-dashboard -- --workspace . --agent-default-config config.toml --bind 127.0.0.1:3001
+[dash] 
+[ui] 
+[ui] > dev:ui
+[ui] > npm run dev -w flow-theatre
+[ui] 
+[ui] 
+[ui] > flow-theatre@0.0.0 dev
+[ui] > vite
+[ui] 
+[ui] Port 3000 is in use, trying another one...
+[ui] 
+[ui]   VITE v8.0.8  ready in 95 ms
+[ui] 
+[ui]   ➜  Local:   http://localhost:3001/
+[dash]     Finished `dev` profile [optimized + debuginfo] t
+[dash]     Finished `dev` profile [optimized + debuginfo] target(s) in 0.37s
+[dash]      Running `target/debug/polyhft-dashboard --works
+[dash]      Running `target/debug/polyhft-dashboard --workspace . --agent-default-config config.toml --bind '127.0.0.1
+[dash]      Running `tget/debug/polyhft-dashboard --workspace . --agent-default-config config.toml --bind '127.0.0.1:3001'`
+[dash] Error: Address already in use (os error 48)
+[dash] npm run dev:dash exited with code 1
+--> Sending SIGTERM to other processes..
+[ui] npm error Lifecycle script `dev` failed with error:
+[ui] npm error code 143
+[ui] npm error path /Users/cassini/Desktop/polymarket/apps/
+[ui] npm error path /Users/cassini/Desktop/polymarket/apps/flow-theatre
+[ui] npm error workspace flow-theatre@0.0.0
+[ui] npm error location /Users/cassini/Desktop/polymarket/a
+[ui] npm error location /Users/cassini/Desktop/polymarket/apps/flow-theatre
+[ui] npm error command failed
+[ui] npm error command sh -c vite
+[ui] npm run dev:ui exited with code 143
+
+

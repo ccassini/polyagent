@@ -1,0 +1,23 @@
+{
+  "name": "polymarket-hft",
+  "private": true,
+  "workspaces": [
+    "apps/flow-theatre"
+  ],
+  "scripts": {
+    "dev":          "concurrently -n ui,dash -c magenta,yellow --kill-others-on-fail \"npm run dev:ui\" \"npm run dev:dash\"",
+    "dev:paper":    "concurrently -n agent,ui,dash -c cyan,magenta,yellow --kill-others-on-fail \"npm run dev:agent:paper\" \"npm run dev:ui\" \"npm run dev:dash\"",
+    "dev:live":     "concurrently -n agent,ui,dash -c cyan,magenta,yellow --kill-others-on-fail \"npm run dev:agent:live\" \"npm run dev:ui\" \"npm run dev:dash\"",
+    "dev:agent:paper": "cargo run -p polyhft-live-agent -- --config config.toml --dry-run",
+    "dev:agent:live":  "cargo run -p polyhft-live-agent -- --config config.toml",
+    "dev:ui":       "npm run dev -w flow-theatre",
+    "dev:dash":     "cargo run -p polyhft-dashboard -- --workspace . --agent-default-config config.toml --bind 127.0.0.1:3001",
+    "build":        "cargo build --release && npm run build -w flow-theatre",
+    "build:release":"cargo build --release",
+    "derive:clob-creds": "cargo run -p polyhft-derive-clob-creds -- --config config.toml",
+    "apply:clob-creds":  "cargo run -p polyhft-derive-clob-creds -- --config config.toml --merge"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

@@ -1,0 +1,9 @@
+global:
+  scrape_interval: 2s
+  evaluation_interval: 2s
+
+scrape_configs:
+  - job_name: polyhft
+    metrics_path: /
+    static_configs:
+      - targets: ["live-agent:9901"]

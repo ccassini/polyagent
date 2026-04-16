@@ -1,0 +1,17 @@
+[package]
+name = "polyhft-signal"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+
+[dependencies]
+anyhow.workspace = true
+chrono.workspace = true
+dashmap.workspace = true
+rust_decimal.workspace = true
+rust_decimal_macros.workspace = true
+serde.workspace = true
+tracing.workspace = true
+
+polyhft-core = { path = "../core" }

@@ -1,0 +1,177 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]: PolyHFT
+      - generic [ref=e7]:
+        - heading "Operator cockpit" [level=1] [ref=e8]
+        - paragraph [ref=e9]: Wide-screen Polymarket control surface for live monitoring and paper execution.
+    - generic [ref=e10]:
+      - generic [ref=e11]:
+        - generic [ref=e12]: Events/s
+        - generic [ref=e13]: —
+      - generic [ref=e14]:
+        - generic [ref=e15]: Cycle
+        - generic [ref=e16]: —
+      - generic [ref=e17]:
+        - generic [ref=e18]: Markets
+        - generic [ref=e19]: —
+      - generic [ref=e20]:
+        - generic [ref=e21]: Fills
+        - generic [ref=e22]: "0"
+    - generic [ref=e23]:
+      - generic [ref=e24]: metrics 0s
+      - generic "Unexpected token '<', \"<!doctype \"... is not valid JSON" [ref=e26]: activity invalid
+      - generic [ref=e28]: live monitor
+  - main [ref=e30]:
+    - complementary [ref=e31]:
+      - generic [ref=e32]:
+        - generic [ref=e33]:
+          - generic [ref=e34]:
+            - generic [ref=e35]: System
+            - heading "Health surface" [level=2] [ref=e36]
+          - generic [ref=e37]: 04:26:57
+        - generic [ref=e38]:
+          - generic [ref=e39]: Live desk
+          - generic [ref=e40]: degraded
+        - generic [ref=e41]:
+          - generic [ref=e42]:
+            - text: Latency
+            - strong [ref=e43]: —
+            - generic [ref=e44]: metrics 0s
+          - generic [ref=e45]:
+            - text: Queue
+            - strong [ref=e46]: —
+            - generic [ref=e47]: activity invalid
+          - generic [ref=e48]:
+            - text: Maker share
+            - strong [ref=e49]: —
+            - generic [ref=e50]: 0 maker / 0 taker
+          - generic [ref=e51]:
+            - text: CL vs Pyth
+            - strong [ref=e52]: —
+            - generic [ref=e53]: edge pending
+      - generic [ref=e54]:
+        - generic [ref=e55]:
+          - generic [ref=e56]:
+            - generic [ref=e57]: Signal
+            - heading "Bias + pressure" [level=2] [ref=e58]
+          - generic [ref=e59]: Theatre-linked pulse
+        - generic [ref=e60]:
+          - generic [ref=e61]:
+            - text: Signal edge
+            - strong [ref=e62]: —
+            - generic [ref=e63]: Edge after fee-aware scoring
+          - generic [ref=e64]:
+            - text: Adverse sel.
+            - strong [ref=e65]: —
+            - generic [ref=e66]: Online risk drag estimate
+          - generic [ref=e67]:
+            - text: Trades buffer
+            - strong [ref=e68]: "0"
+            - generic [ref=e69]: Recent fills retained in memory
+          - generic [ref=e70]:
+            - text: Metrics source
+            - strong [ref=e71]: /metrics
+            - generic [ref=e72]: Prometheus scrape endpoint
+        - generic [ref=e73]:
+          - generic [ref=e74]:
+            - generic [ref=e75]: Signal heat
+            - generic [ref=e76]: 50%
+          - generic [ref=e79]:
+            - generic [ref=e80]: Queue pressure
+            - generic [ref=e81]: 22%
+      - generic [ref=e84]:
+        - generic [ref=e85]:
+          - generic [ref=e86]:
+            - generic [ref=e87]: Telemetry
+            - heading "Engine feed" [level=2] [ref=e88]
+          - generic [ref=e89]: 1 lines
+        - log [ref=e90]:
+          - generic [ref=e91]:
+            - generic [ref=e92]: 01:26:57.694
+            - generic [ref=e93]: scrape_ok (no polyhft_* series yet)
+    - generic [ref=e94]:
+      - generic [ref=e95]:
+        - generic [ref=e96]:
+          - generic [ref=e97]:
+            - generic [ref=e98]: Desk summary
+            - generic [ref=e99]: Live monitoring desk
+          - generic [ref=e100]: Watching live metrics, fills, and market discovery without changing engine behavior.
+        - generic [ref=e101]:
+          - generic [ref=e102]:
+            - text: Live fills
+            - strong [ref=e103]: "0"
+            - generic [ref=e104]: Confirmed in session buffer
+          - generic [ref=e105]:
+            - text: Markets tracked
+            - strong [ref=e106]: "0"
+            - generic [ref=e107]: Gamma-discovered universe
+          - generic [ref=e108]:
+            - text: Events / sec
+            - strong [ref=e109]: —
+            - generic [ref=e110]: Current ingest throughput
+          - generic [ref=e111]:
+            - text: Decision cycle
+            - strong [ref=e112]: —
+            - generic [ref=e113]: End-to-end loop time
+      - generic [ref=e114]:
+        - generic [ref=e115]:
+          - generic [ref=e116]:
+            - generic [ref=e117]: Execution
+            - heading "Pipeline" [level=2] [ref=e118]
+          - generic [ref=e119]: stage pulse 1 / 4
+        - generic [ref=e120]:
+          - generic [ref=e121]:
+            - generic [ref=e122]: Market tape
+            - strong [ref=e123]: Ingest
+            - generic [ref=e124]: —
+            - generic [ref=e125]: Metrics link healthy
+            - generic [ref=e126]: "01"
+          - generic [ref=e127]:
+            - generic [ref=e128]: Edge map
+            - strong [ref=e129]: Signal
+            - generic [ref=e130]: —
+            - generic [ref=e131]: No basis snapshot yet
+            - generic [ref=e132]: "02"
+          - generic [ref=e133]:
+            - generic [ref=e134]: Guard rails
+            - strong [ref=e135]: Risk
+            - generic [ref=e136]: —
+            - generic [ref=e137]: Queue depth pending
+            - generic [ref=e138]: "03"
+          - generic [ref=e139]:
+            - generic [ref=e140]: Order flow
+            - strong [ref=e141]: Execute
+            - generic [ref=e142]: "0"
+            - generic [ref=e143]: No fills yet
+            - generic [ref=e144]: "04"
+      - generic [ref=e145]:
+        - generic [ref=e146]:
+          - generic [ref=e147]:
+            - generic [ref=e148]: Execution tape
+            - heading "Live fills" [level=2] [ref=e149]
+          - generic [ref=e150]:
+            - generic [ref=e151]: "0"
+            - text: session buffer
+        - generic [ref=e152]:
+          - generic [ref=e153]: ◌
+          - paragraph [ref=e154]: No fills in buffer yet. The desk is listening, but nothing has crossed yet.
+    - complementary [ref=e155]:
+      - generic [ref=e156]:
+        - generic [ref=e157]:
+          - generic [ref=e158]:
+            - generic [ref=e159]: Watchlist
+            - heading "Markets" [level=2] [ref=e160]
+          - generic [ref=e162]: "0"
+        - generic [ref=e163]:
+          - generic [ref=e164]: ·
+          - paragraph [ref=e165]: Discovery is still warming up.
+      - generic [ref=e166]:
+        - generic [ref=e167]:
+          - generic [ref=e168]:
+            - generic [ref=e169]: Activity
+            - heading "Recent tape" [level=2] [ref=e170]
+          - generic [ref=e171]: 04:26:57
+        - generic [ref=e172]:
+          - generic [ref=e173]: ·
+          - paragraph [ref=e174]: The tape will populate as soon as the first fill lands.
